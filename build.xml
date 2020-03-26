@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright IBM Corp. 2007-2020 All Rights Reserved.
+SPDX-License-Identifier: Apache-2.0
+-->
+<project name="PackageEnvXML" default="complete">
+	<description>Package a zip file for deployment to an MDM-CE environment.</description>
+	<echo message="Building zip file for MDM-CE environment." />
+	<tstamp/>
+
+	<!-- For a fully-automated build, comment out the <input /> lines below -->
+	<!-- and replace the variables ( ${...} ) with hard-coded values        -->
+	<target name="build" description="Build the environment import files.">
+		<input message="Company code: " addproperty="CMP_CODE" />
+		<input message="Please specify the version of the environment: " addproperty="VERSION" validargs="5.2.1,5.3.0,5.3.1,5.3.2,6.0.0,6.5.0,9.0.0" />
+		<input message="Input files (path to loadToEnv/FILES): " addproperty="INPUT_DIR" />
+		<java classname="com.ibm.mdmce.envtoolkit.deployment.EnvironmentHandler" classpath="target/mdmce-environment-deployment-toolkit-1.0-SNAPSHOT.jar">
+			<arg value="${CMP_CODE}" />
+			<arg file="${INPUT_DIR}/Deployment" />
+			<arg file="tmp/EnvBuild" />
+			<arg value="${VERSION}" />
+			<arg file="${INPUT_DIR}/documentation" />
+		</java>
+		<echo message="Built complete environment import file." />
+	</target>
+
+	<target name="copy" depends="build" description="Copy all dependent files into the temporary location.">
+		<copy todir="tmp/EnvBuild/DOCSTORE/FILES/"><fileset dir="${INPUT_DIR}"/></copy>
+	</target>
+	
+	<target name="zip" depends="copy" description="Build the environment ZIP file.">
+		<zip destfile="${CMP_CODE}_${VERSION}_${DSTAMP}.zip" basedir="tmp/EnvBuild/" excludes="**/.git/*, **/data/*" encoding="UTF8" />
+	</target>
+	
+	<target name="clean" depends="zip" description="Clean the copied files.">
+		<delete failonerror="false" includeemptydirs="true" dir="tmp" />
+	</target>
+	
+	<target name="complete" depends="clean" description="Completion message.">
+		<echo message="Environment file creation complete." />
+	</target>
+
+</project>

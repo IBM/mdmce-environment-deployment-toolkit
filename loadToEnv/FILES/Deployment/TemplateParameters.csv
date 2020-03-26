@@ -1,0 +1,5 @@
+$[PRIMARY_VAR],Value1,Value2,Value3
+$[DEPENDENT_VAR],Value1.1,Value2.1,Value3.1
+,Value1.2,Value2.2,
+,,Value2.3,
+,,Value2.4,
