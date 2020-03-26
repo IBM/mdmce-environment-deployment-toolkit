@@ -14,7 +14,7 @@ SPDX-License-Identifier: Apache-2.0
 		<input message="Company code: " addproperty="CMP_CODE" />
 		<input message="Please specify the version of the environment: " addproperty="VERSION" validargs="5.2.1,5.3.0,5.3.1,5.3.2,6.0.0,6.5.0,9.0.0" />
 		<input message="Input files (path to loadToEnv/FILES): " addproperty="INPUT_DIR" />
-		<java classname="com.ibm.mdmce.envtoolkit.deployment.EnvironmentHandler" classpath="target/mdmce-environment-deployment-toolkit-1.0-SNAPSHOT.jar">
+		<java classname="com.ibm.mdmce.envtoolkit.deployment.EnvironmentHandler" classpath="target/mdmce-environment-deployment-toolkit-1.1-SNAPSHOT.jar">
 			<arg value="${CMP_CODE}" />
 			<arg file="${INPUT_DIR}/Deployment" />
 			<arg file="tmp/EnvBuild" />
