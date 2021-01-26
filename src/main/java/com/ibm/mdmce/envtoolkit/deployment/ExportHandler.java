@@ -55,7 +55,7 @@ public class ExportHandler extends BasicEntityHandler {
 							instance.getInputSpec(),
 							instance.getParamsPath(),
 							"/params/None");
-					EnvironmentHandler.getHandler("Document").addToCache(docParams.getPathRemote(), docParams);
+					EnvironmentHandler.getHandler("Script").addToCache(docParams.getPathRemote(), docParams);
 				}
 			}
 		}
