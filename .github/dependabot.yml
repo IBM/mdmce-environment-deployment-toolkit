@@ -1,0 +1,10 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 100
+  reviewers:
+  - cmgrote
+  - remiserra
+
