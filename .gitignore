@@ -2,3 +2,7 @@
 target/
 tmp/
 *.zip
+/bin/
+.classpath
+.project
+.settings/org.eclipse.*.prefs

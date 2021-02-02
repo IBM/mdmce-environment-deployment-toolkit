@@ -44,7 +44,7 @@ public class Export extends BasicEntity {
     private String selection;
     private String diffType;
     private String paramsName;
-    private String paramsPath;
+    private String paramsPath="";
     private String hierarchyName;
     private String inputSpec;
 
