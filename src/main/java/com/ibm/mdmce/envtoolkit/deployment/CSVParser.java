@@ -75,7 +75,7 @@ public class CSVParser {
             sLineCSV = readerCSV.readLine();
             if (sLineCSV == null)
                 return null;
-        } while (sLineCSV.trim().equals(""));
+        } while (sLineCSV.trim().equals("") || sLineCSV.replace(",", "").replace("\"\"", "").equals(""));
         return sLineCSV;
     }
 

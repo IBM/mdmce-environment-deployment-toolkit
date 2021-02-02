@@ -63,7 +63,12 @@ public class CatalogHandler extends BasicEntityHandler {
 			}
 
 			for (Map.Entry<String, String> entry : ctg.getLinkSpecPathToDestinationCatalog().entrySet()) {
-				String sLinkAttrPath = entry.getKey().replace(ctg.getSpecName() + "/", "");
+				//String sLinkAttrPath = entry.getKey().replace(ctg.getSpecName() + "/", "");//RS 20151201 if attribute name ends with spec name, it is removed. ex : spec/attributeofspec/ --> /attributeof/ 
+				//as we just want to remove the spec name at the beginning of the string, this is better:				
+				String sLinkAttrPath = entry.getKey();
+				if(sLinkAttrPath.startsWith(ctg.getSpecName() + "/")){
+					sLinkAttrPath = sLinkAttrPath.substring((ctg.getSpecName() + "/").length());
+				}				
 				String sDestinationCtg = entry.getValue();
 				attr = spec.getAttributes().get(sLinkAttrPath);
 				bValid = (attr != null) && bValid;

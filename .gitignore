@@ -3,7 +3,6 @@ target/
 tmp/
 *.zip
 /bin/
-.settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.core.resources.prefs
-.project
 .classpath
+.project
+.settings/org.eclipse.*.prefs

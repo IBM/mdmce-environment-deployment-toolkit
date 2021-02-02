@@ -54,7 +54,7 @@ public class ImportFeedHandler extends BasicEntityHandler {
 				if (docParams == null) {
 					out.println(" . . . generating default parameters: " + instance.getParamsPath());
 					docParams = new Script("INPUT_PARAM", instance.getParamsName(), instance.getInputSpec(), "/params/None", instance.getParamsPath());
-					EnvironmentHandler.getHandler("Document").addToCache(docParams.getPathRemote(), docParams);
+					EnvironmentHandler.getHandler("Script").addToCache(docParams.getPathRemote(), docParams);
 				}
 			}
 		}
