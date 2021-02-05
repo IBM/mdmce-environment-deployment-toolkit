@@ -229,6 +229,7 @@ public class Script extends BasicEntity {
                     String sAttrValue = aParamTokens[1];
                     sAttribs.append("         <Attrib name=\"").append(sAttrPath).append("\" value=\"").append(sAttrValue).append("\"/>\n");
                 }
+                rdrParams.close();
             }
         } else if (isAspJspLike()) {
             sAttribs.append("         <Attrib name=\"jsplike\" value=\"true\"/>\n" + "         <Attrib name=\"ATTR_JSPLIKE\" value=\"true\"/>\n");
