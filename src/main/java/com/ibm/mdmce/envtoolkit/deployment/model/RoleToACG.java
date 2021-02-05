@@ -45,7 +45,7 @@ public class RoleToACG extends BasicEntity {
      * @param aFields from which to construct the Role
      */
     @Override
-    @SuppressWarnings("unchecked")
+    //@SuppressWarnings("unchecked")
     public <T extends BasicEntity> T createInstance(List<String> aFields) {
         // do nothing...
         return null;
