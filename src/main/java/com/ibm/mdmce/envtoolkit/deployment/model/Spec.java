@@ -451,7 +451,7 @@ public class Spec extends BasicEntity {
         List<String> line = new ArrayList<>();
 
         for (Map.Entry<String, Attribute> entry : hmAttributes.entrySet()) {
-            String sAttrPath = entry.getKey();
+            //String sAttrPath = entry.getKey();
             Attribute attr = entry.getValue();
             line.add("");
             line.add(getName());
