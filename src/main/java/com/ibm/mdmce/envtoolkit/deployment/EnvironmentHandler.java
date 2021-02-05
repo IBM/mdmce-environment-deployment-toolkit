@@ -62,6 +62,7 @@ public class EnvironmentHandler {
             "RoleToACG",
             "AccessPriv",
             "User",
+            "Setting",
             "Workflow",
             "WorkflowStepView",
             "ColArea",
@@ -98,6 +99,7 @@ public class EnvironmentHandler {
         hmEntityHandlers.put("RoleToACG", new RoleMappingHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("AccessPriv", new AccessPrivilegeHandler(inputPath, version, templateParameters, companyCode, _ENCODING));
         hmEntityHandlers.put("User", new UserHandler(inputPath, version, templateParameters, _ENCODING));
+        hmEntityHandlers.put("Setting", new SettingHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("Workflow", new WorkflowHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("WorkflowStepView", new WorkflowStepViewHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("ColArea", new CollaborationAreaHandler(inputPath, version, templateParameters, _ENCODING));

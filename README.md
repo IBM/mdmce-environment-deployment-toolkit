@@ -41,6 +41,7 @@ in with the details of your environment according to the specific instructions l
 - [Scripts.csv](docs/Scripts.md) to define scripts or other documents to load to the document store
 - [SearchTemplates.csv](docs/SearchTemplates.md) to define search templates
 - [Selections.csv](docs/Selections.md) to define selections
+- [Settingss.csv](docs/Settings.md) to define user settings
 - [Specs.csv](docs/Specs.md) to define specs
 - [SpecMaps.csv](docs/SpecMaps.md) to define spec mappings
 - [UDLs.csv](docs/UDLs.md) to define user defined logs
