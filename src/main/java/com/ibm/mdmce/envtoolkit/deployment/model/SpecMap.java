@@ -162,7 +162,7 @@ public class SpecMap extends BasicEntity {
         sCorrectedPath = sCorrectedPath.substring(sCorrectedPath.indexOf("/"));
         osw.write(sCorrectedPath + "\n");
         osw.flush();
-
+        osw.close();
     }
 
     /**
