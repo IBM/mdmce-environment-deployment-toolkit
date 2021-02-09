@@ -135,6 +135,9 @@ public class WebService extends BasicEntity {
                 sbWSDL.append(sLine).append("\n");
                 sLine = readerWSDL.readLine();
             }
+            
+            readerScript.close();
+            readerWSDL.close();
 
             outFile.write("   <WEBSERVICE>\n");
             outFile.write(getNodeXML("Name", getName()));

@@ -64,7 +64,8 @@ public abstract class ContainerContentHandler extends BasicEntityHandler {
 				ContainerContent instance = entity.createInstance(aReplacedTokens);
 				File fDataFile = new File(relativePath + File.separator + instance.getDataFilePath().replace("/", File.separator));
 				if (fDataFile.isFile()) {
-					FileChannel srcChannel = new FileInputStream(fDataFile.getAbsolutePath()).getChannel();
+					FileInputStream srcFileStream = new FileInputStream(fDataFile.getAbsolutePath());
+					FileChannel srcChannel = srcFileStream.getChannel();
 					String sOutputFileName = instance.getDataFilePath().substring(instance.getDataFilePath().lastIndexOf("/") + 1);
 					instance.setFilename(sOutputFileName);
 					String sOutputFilePath = outputPath + File.separator + sOutputFileName;
@@ -72,10 +73,13 @@ public abstract class ContainerContentHandler extends BasicEntityHandler {
 					fDirs.mkdirs();
 					File fDst = new File(sOutputFilePath);
 					fDst.createNewFile();
-					FileChannel dstChannel = new FileOutputStream(fDst).getChannel();
+					FileOutputStream dstFileStream = new FileOutputStream(fDst);
+					FileChannel dstChannel = dstFileStream.getChannel();
 					dstChannel.transferFrom(srcChannel, 0, srcChannel.size());
 					srcChannel.close();
 					dstChannel.close();
+					srcFileStream.close();
+					dstFileStream.close();
 				} else {
 					err.println(". . . WARNING: Data file - " + relativePath + File.separator + instance.getDataFilePath() + " - not found.");
 				}
