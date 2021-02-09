@@ -21,8 +21,8 @@ public class SettingHandler extends BasicEntityHandler {
 
     public SettingHandler(String sInputFilePath, String sVersion, TemplateParameters tp, String sEncoding) {
         super(Setting.getInstance(),
-                "Settings.csv",
-                "MY_SETTINGS" + File.separator + "MY_SETTINGS.xml",
+                "Settings.csv",//Name of the input csv file
+                "MY_SETTINGS" + File.separator + "MY_SETTINGS.xml",//Path and name of the output xml file
                 sInputFilePath,
                 sVersion,
                 tp,
