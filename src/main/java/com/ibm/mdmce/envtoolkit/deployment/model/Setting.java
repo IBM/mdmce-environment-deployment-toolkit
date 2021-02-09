@@ -39,7 +39,7 @@ public class Setting extends BasicEntity {
     }
 
     private Setting() {
-        super("SETTINGS", "Settings");
+        super("MY_SETTINGS", "UserSettings");//Name of the object in ImportEnvControl.xml, and top level xml tag in the dedicated xml file
         addColumn(COUNTRY_SPECIFIC);
         addColumn(USERNAME);
         addColumn(SETTINGNAME);
