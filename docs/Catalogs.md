@@ -22,6 +22,8 @@
     on a new line within the cell (CTRL-Enter within Excel).
 1. **Scripts** - comma-separated list of the scripts that should be associated with the catalog.  Each script takes the
     form `ScriptType|ScriptName`
+1. **User Defined Attributes** - comma-separated list of user defined attributes to be added to the catalog.  Each attribute takes the
+    form `AttributeName|AttributeValue`. This can be used to set the domain parameters: DOMAIN_ENTITY_FOR_ITEM, DOMAIN_ENTITY_ATTRIBUTE
 
 ### Valid script types
 

@@ -26,6 +26,7 @@ public class Catalog extends BasicEntity {
     public static final String LINKS = "Links";
     public static final String LOCATIONS = "Locations";
     public static final String SCRIPTS = "Scripts";
+    public static final String USER_DEFINED_ATTRIBUTES = "User Defined Attributes";//RS20210217 added to support domain attributes
 
     private String name;
     private String specName;
@@ -35,10 +36,11 @@ public class Catalog extends BasicEntity {
     private String displayAttribute;
     private String acg;
     private Map<String, String> linkSpecPathToDestinationCatalog = new TreeMap<>();
-    private Map<String, String> linkSpecPathToDestinationAttribute = new TreeMap<>();//RS20210217
+    private Map<String, String> linkSpecPathToDestinationAttribute = new TreeMap<>();//RS20210217 support destination display attribute
     private Map<String, Map<String, List<String>>> locationHierarchyToAttributeCollections = new TreeMap<>();
     private Map<String, String> scriptTypeToName = new TreeMap<>();
     private String userDefinedCoreAttrGroup = "";
+    private Map<String, String> userDefinedAttributeNameToValue = new TreeMap<>();//RS20210217 added to support domain attributes
 
     private static class Singleton {
         private static final Catalog INSTANCE = new Catalog();
@@ -65,6 +67,7 @@ public class Catalog extends BasicEntity {
         addColumn(LINKS);
         addColumn(LOCATIONS);
         addColumn(SCRIPTS);
+        addColumn(USER_DEFINED_ATTRIBUTES);
     }
 
     /**
@@ -130,6 +133,14 @@ public class Catalog extends BasicEntity {
             }
         }
 
+        String sUserDefinedAttributes = getFieldValue(USER_DEFINED_ATTRIBUTES, aFields);
+        for (String userDefinedAttribute : sUserDefinedAttributes.split(",")) {
+            String[] aUserDefinedAttributeToken = userDefinedAttribute.split("\\Q|\\E");
+            if (aUserDefinedAttributeToken.length == 2) {
+                ctg.userDefinedAttributeNameToValue.put(aUserDefinedAttributeToken[0], aUserDefinedAttributeToken[1]);
+            }
+        }
+
         return (T) ctg;
 
     }
@@ -174,7 +185,23 @@ public class Catalog extends BasicEntity {
 
         outFile.write(getNodeXML("DisplayAttribute", getDisplayAttribute()));
         outFile.write(getNodeXML("AttributeGroup", getUserDefinedCoreAttrGroup()));
-        outFile.write(getNodeXML("UserDefinedAttributes", ""));
+
+        Map<String, String> hmUserDefinedAttributeNameToValue = getuserDefinedAttributeNameToValue();
+		if (hmUserDefinedAttributeNameToValue.size() > 0) {//RS20210217 added to support domain attributes
+			outFile.write("      <UserDefinedAttributes>\n");			
+            for (Map.Entry<String, String> entry : hmUserDefinedAttributeNameToValue.entrySet()) {
+                String sAttributeName = entry.getKey();
+                String sAttributeValue = entry.getValue();
+				outFile.write("         <UserDefinedAttribute>\n");
+				outFile.write("            <UserDefinedAttributeName><![CDATA[" + sAttributeName + "]]></UserDefinedAttributeName>\n");
+				outFile.write("            <UserDefinedAttributeValue><![CDATA[" + sAttributeValue + "]]></UserDefinedAttributeValue>\n");
+				outFile.write("         </UserDefinedAttribute>\n");
+			}
+			outFile.write("      </UserDefinedAttributes>\n");
+		} else {
+			outFile.write(getNodeXML("UserDefinedAttributes", ""));
+		}	
+
 
         Map<String, String> hmLinkAttrToCtgs = getLinkSpecPathToDestinationCatalog();
         Map<String, String> hmLinkAttrToAttrs = getLinkSpecPathToDestinationAttribute();
@@ -302,6 +329,16 @@ public class Catalog extends BasicEntity {
         if (!sScripts.equals(""))
             sScripts = sScripts.substring(1);
 
+        StringBuilder sbUserDefinedAttributes = new StringBuilder();
+        for (Map.Entry<String, String> entry : getuserDefinedAttributeNameToValue().entrySet()) {
+            String sUserDefinedAttributeName = entry.getKey();
+            String sUserDefinedAttributeValue = entry.getValue();
+            sbUserDefinedAttributes.append(",").append(sUserDefinedAttributeName).append("|").append(sUserDefinedAttributeValue);
+        }
+        String sUserDefinedAttributes = sbUserDefinedAttributes.toString();
+        if (!sUserDefinedAttributes.equals(""))
+            sUserDefinedAttributes = sUserDefinedAttributes.substring(1);
+
         line.add("");
         line.add(getSpecName());
         line.add(getPrimaryHierarchy());
@@ -312,6 +349,7 @@ public class Catalog extends BasicEntity {
         line.add(escapeForCSV(sLinks));
         line.add(escapeForCSV(sLocations));
         line.add(escapeForCSV(sScripts));
+        line.add(escapeForCSV(sUserDefinedAttributes));
 
         outputCSV(line, outFile);
 
@@ -371,6 +409,14 @@ public class Catalog extends BasicEntity {
      */
     public String getAcg() {
         return acg;
+    }
+
+    /**
+     * Retrieve a mapping from user Defined Attribute Name to it's value for this instance of a catalog.
+     * @return {@code Map<String, String>}
+     */
+    public Map<String, String> getuserDefinedAttributeNameToValue() {
+        return userDefinedAttributeNameToValue;
     }
 
     /**
