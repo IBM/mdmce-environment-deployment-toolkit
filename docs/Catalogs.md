@@ -14,7 +14,8 @@
 1. **Display Attribute** - full spec path of the display attribute to be used for the catalog
 1. **ACG** - name of the access control group to be associated to the catalog
 1. **Links** - comma-separated list of the links that should be defined for the catalog.  Each link takes the form
-    `FullSpecPathToLinkingAttribute|DestinationCatalogName`
+    `FullSpecPathToLinkingAttribute|DestinationCatalogName`.
+    Optionaly you can specify a display attribute instead of the primary key with `FullSpecPathToLinkingAttribute|DestinationCatalogName|FullSpecPathToDestinationCatalogAttribute`
 1. **Locations** - location hierarchy and details specified in the format:
     `HierarchyName=SecondarySpecName|InheritanceAttributeCollectionList`, where the `InheritanceAttributeCollectionList`
     is itself a comma-separated list of attribute collection names. Separate location hierarchies will need to be defined

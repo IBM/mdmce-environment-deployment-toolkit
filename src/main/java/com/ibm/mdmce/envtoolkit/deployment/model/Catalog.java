@@ -35,6 +35,7 @@ public class Catalog extends BasicEntity {
     private String displayAttribute;
     private String acg;
     private Map<String, String> linkSpecPathToDestinationCatalog = new TreeMap<>();
+    private Map<String, String> linkSpecPathToDestinationAttribute = new TreeMap<>();//RS20210217
     private Map<String, Map<String, List<String>>> locationHierarchyToAttributeCollections = new TreeMap<>();
     private Map<String, String> scriptTypeToName = new TreeMap<>();
     private String userDefinedCoreAttrGroup = "";
@@ -91,6 +92,9 @@ public class Catalog extends BasicEntity {
             String[] aLinkTokens = link.split("\\Q|\\E");
             if (aLinkTokens.length == 2) {
                 ctg.linkSpecPathToDestinationCatalog.put(aLinkTokens[0], aLinkTokens[1]);
+            }else if (aLinkTokens.length == 3) {//RS20210227 Since v11 we can specify a target attribute (instead of pk), linkAttribPath|Dest Catalog|Dest attribute
+                ctg.linkSpecPathToDestinationCatalog.put(aLinkTokens[0], aLinkTokens[1]);
+                ctg.linkSpecPathToDestinationAttribute.put(aLinkTokens[0], aLinkTokens[2]);
             }
         }
 
@@ -173,6 +177,7 @@ public class Catalog extends BasicEntity {
         outFile.write(getNodeXML("UserDefinedAttributes", ""));
 
         Map<String, String> hmLinkAttrToCtgs = getLinkSpecPathToDestinationCatalog();
+        Map<String, String> hmLinkAttrToAttrs = getLinkSpecPathToDestinationAttribute();
         if (hmLinkAttrToCtgs.size() > 0) {
             outFile.write("      <LinkAttributes>\n");
         } else {
@@ -184,8 +189,13 @@ public class Catalog extends BasicEntity {
             outFile.write("         <LinkAttribute>\n");
             outFile.write("            <LinkSourceAttribute><![CDATA[" + sLinkAttr + "]]></LinkSourceAttribute>\n");
             Catalog ctgLinked = (Catalog) BasicEntityHandler.getFromCache(sDstCtgName, Catalog.class.getName(), true, false);
-            Spec specCtgLinked = (Spec) BasicEntityHandler.getFromCache(ctgLinked.getSpecName(), Spec.class.getName(), true, false);
-            outFile.write("            <LinkDestinationAttribute><![CDATA[" + specCtgLinked.getPrimaryKeyPath() + "]]></LinkDestinationAttribute>\n");
+            Spec specCtgLinked = (Spec) BasicEntityHandler.getFromCache(ctgLinked.getSpecName(), Spec.class.getName(), true, false);    
+            String sDstAttrName = (String)hmLinkAttrToAttrs.get(sLinkAttr);//RS20210217 Support target attribute
+			if (sDstAttrName==null || sDstAttrName.equals("")){
+                outFile.write("            <LinkDestinationAttribute><![CDATA[" + specCtgLinked.getPrimaryKeyPath() + "]]></LinkDestinationAttribute>\n");
+            }else{
+				outFile.write("            <LinkDestinationAttribute><![CDATA[" + sDstAttrName + "]]></LinkDestinationAttribute>\n");
+			}            
             outFile.write("            <LinkDstCatalog><![CDATA[" + sDstCtgName + "]]></LinkDstCatalog>\n");
             outFile.write("         </LinkAttribute>\n");
         }
@@ -259,6 +269,10 @@ public class Catalog extends BasicEntity {
             String sLinkAttr = entry.getKey();
             String sDestCtg = entry.getValue();
             sbLinks.append(",").append(sLinkAttr).append("|").append(sDestCtg);
+            String sDestAttr = (String)getLinkSpecPathToDestinationAttribute().get(sLinkAttr);//RS20210217 Support target attribute
+			if (sDestAttr !=null && ! sDestAttr.equals("")){
+                sbLinks.append("|").append(sDestAttr);
+            }
         }
         String sLinks = sbLinks.toString();
         if (!sLinks.equals(""))
@@ -367,6 +381,16 @@ public class Catalog extends BasicEntity {
     public Map<String, String> getLinkSpecPathToDestinationCatalog() {
         return linkSpecPathToDestinationCatalog;
     }
+
+    /**
+     * Retrieve a mapping from the linking attribute spec path to the destination attribute for this instance of a
+     * catalog.
+     * @return {@code Map<String, String>}
+     */
+    public Map<String, String> getLinkSpecPathToDestinationAttribute() {
+        return linkSpecPathToDestinationAttribute;
+    }
+    
 
     /**
      * Retrieve a mapping from the location hierarchy to its secondary specs and their attribute groups for this

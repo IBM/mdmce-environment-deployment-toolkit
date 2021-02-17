@@ -73,8 +73,31 @@ public class CatalogHandler extends BasicEntityHandler {
 				attr = spec.getAttributes().get(sLinkAttrPath);
 				bValid = (attr != null) && bValid;
 				if (attr == null)
-					err.println("WARNING (" + ctg.getName() + "): Unable to find attribute - " + ctg.getSpecName() + "/" + sLinkAttrPath);
+					err.println("WARNING (" + ctg.getName() + "): Unable to find link attribute - " + ctg.getSpecName() + "/" + sLinkAttrPath);
 				bValid = validateExists(sDestinationCtg, Catalog.class.getName(), ctg.getName()) && bValid;
+				//RS20210217: if we have a target attribute, check it exists 
+				String sDestAttr = (String)ctg.getLinkSpecPathToDestinationAttribute().get(sLinkAttrPath);
+				if (sDestAttr != null){
+					if (sDestAttr.equals("")){
+						err.println("WARNING (" + ctg.getName() + "): Empty target link attribute - " + sDestAttr);
+					}else{
+						String sDestSpecName = sDestAttr.split("\\Ω/\\E")[0];
+						bValid = validateExists(sDestSpecName, Spec.class.getName(), ctg.getName()) && bValid;
+						Spec specDestSpec = (Spec) getFromCache(sDestSpecName, Spec.class.getName(), false, false);
+						if( specDestSpec != null ){
+							String sDestAttrPath = sDestAttr.substring((sDestSpecName + "/").length());
+							Spec.Attribute attrDestAttr = specDestSpec.getAttributes().get(sDestAttrPath);
+							bValid = (attrDestAttr != null) && bValid;
+							if (attrDestAttr == null){
+								err.println("WARNING (" + ctg.getName() + "): Unable to find target link attribute - " + sDestSpecName + "/" + sDestAttrPath);
+							}else{//check the target attribute is valid for link: indexed
+								if (! attrDestAttr.isIndexed())
+									err.println("WARNING (" + ctg.getName() + "): Target link attribute is not indexed - " + sDestSpecName + "/" + sDestAttrPath);
+								bValid = (attrDestAttr.isIndexed()) && bValid;
+							}
+						}
+					}
+				}
 			}
 
 		}
