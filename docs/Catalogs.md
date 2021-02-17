@@ -23,7 +23,7 @@
 1. **Scripts** - comma-separated list of the scripts that should be associated with the catalog.  Each script takes the
     form `ScriptType|ScriptName`
 1. **User Defined Attributes** - comma-separated list of user defined attributes to be added to the catalog.  Each attribute takes the
-    form `AttributeName|AttributeValue`. This can be used to set the domain parameters: DOMAIN_ENTITY_FOR_ITEM, DOMAIN_ENTITY_ATTRIBUTE
+    form `AttributeName|AttributeValue`. This can be used to set the domain parameters: [DOMAIN_ENTITY_FOR_ITEM, DOMAIN_ENTITY_ATTRIBUTE](https://www.ibm.com/support/knowledgecenter/SSADN3_12.0.0/dev_soln/labels/con_customizinglabels.html)
 
 ### Valid script types
 

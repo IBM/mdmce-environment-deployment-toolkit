@@ -86,6 +86,7 @@ public class Catalog extends BasicEntity {
         ctg.primaryHierarchy = getFieldValue(PRIMARY_HIERARCHY, aFields);
         String sSecondaryHierarchies = getFieldValue(SECONDARY_HIERARCHIES, aFields);
         ctg.secondaryHierarchies.addAll(Arrays.asList(sSecondaryHierarchies.split(",")));
+        ctg.secondaryHierarchies.removeAll(Arrays.asList(""));//RS20210217 Remove empty strings
         ctg.inheritance = CSVParser.checkBoolean(getFieldValue(INHERIT, aFields));
         ctg.displayAttribute = getFieldValue(DISPLAY_ATTRIBUTE, aFields);
         ctg.acg = getFieldValue(ACG, aFields);
