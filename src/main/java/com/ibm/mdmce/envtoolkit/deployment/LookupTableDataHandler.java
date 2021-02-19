@@ -30,7 +30,7 @@ public class LookupTableDataHandler extends BasicEntityHandler {
 
 		sInputFilePath = sInputFilePath + File.separator + csvFilePath;
 
-		out.println("Reading input from: " + sInputFilePath);
+		EnvironmentHandler.logger.info("Reading input from: " + sInputFilePath);
 
 		File dirLkpData = new File(sInputFilePath);
 		File[] aLkpDataFiles = dirLkpData.listFiles();
@@ -38,7 +38,7 @@ public class LookupTableDataHandler extends BasicEntityHandler {
 		if (aLkpDataFiles != null) {
 			for (File fInputFile : aLkpDataFiles) {
 				if (fInputFile.isFile()) {
-					out.println(" - File from: " + fInputFile.getName());
+					EnvironmentHandler.logger.info(" - File from: " + fInputFile.getName());
 					try {
 						// Read in the entities first...
 						CSVParser readerCSV = new CSVParser(fInputFile, sEncoding);
@@ -64,10 +64,10 @@ public class LookupTableDataHandler extends BasicEntityHandler {
 						outTransformedFile.close();
 
 					} catch (FileNotFoundException errNoFile) {
-						err.println("Error: File not found! " + errNoFile.getMessage());
+						EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
 						federated = false;
 					} catch (IOException errIO) {
-						err.println("Error: IO problem! " + errIO.getMessage());
+						EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
 					}
 				}
 			}

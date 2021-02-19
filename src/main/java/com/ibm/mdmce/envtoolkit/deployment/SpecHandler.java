@@ -47,13 +47,13 @@ public class SpecHandler extends BasicEntityHandler {
 		if (spec.getType().equals("PRIMARY_SPEC") || spec.getType().equals("LKP_SPEC")) {
 			String sPathPK = spec.getPrimaryKeyPath();
 			if (sPathPK.equals("")) {
-				err.println(". . . WARNING (" + spec.getName() + "): No primary key selected.");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + spec.getName() + "): No primary key selected.");
 				bValid = false;
 			}
 			Spec.Attribute attr = hmAttrs.get(sPathPK);
 			if (attr != null) {
 				if (! (attr.getMin() == 1 && attr.getMax() == 1) ) {
-					err.println(". . . WARNING (" + spec.getName() + "): Primary key attribute does not have min / max occurrence of 1.");
+					EnvironmentHandler.logger.warning(". . . WARNING (" + spec.getName() + "): Primary key attribute does not have min / max occurrence of 1.");
 					bValid = false;
 				}
 			}
@@ -82,7 +82,7 @@ public class SpecHandler extends BasicEntityHandler {
 					|| (sAttrPath.indexOf(",") > 0)
 					|| (sAttrPath.indexOf("*") > 0)
 					|| (sAttrPath.indexOf("|") > 0)) {
-				err.println(". . . WARNING (" + spec.getName() + "): Attribute \"" + sAttrPath + "\" contains illegal character - cannot contain any of the following: []{}:\\\"'#@<>,*|");
+						EnvironmentHandler.logger.warning(". . . WARNING (" + spec.getName() + "): Attribute \"" + sAttrPath + "\" contains illegal character - cannot contain any of the following: []{}:\\\"'#@<>,*|");
 			}
 			// Ensure we capture unspecified lookup tables and give some better warning information [BF#73391]
 			if (attr.getType().equals("LOOKUP_TABLE"))
@@ -91,12 +91,12 @@ public class SpecHandler extends BasicEntityHandler {
 			while (iParentIdx != -1) {
 				String sParentPath = sAttrPath.substring(0, iParentIdx);
 				if (!hmAttrs.containsKey(sParentPath)) {
-					err.println(". . . WARNING (" + spec.getName() + "): Parent attribute '" + sParentPath + "' not defined before child definition(s).");
+					EnvironmentHandler.logger.warning(". . . WARNING (" + spec.getName() + "): Parent attribute '" + sParentPath + "' not defined before child definition(s).");
 					bValid = false;
 				} else {
 					Spec.Attribute attrParent = hmAttrs.get(sParentPath);
 					if (!attrParent.getType().equals("GROUPING")) {
-						err.println(". . . WARNING (" + spec.getName() + "): Parent attribute type is not set to GROUPING for parent attribute '" + sParentPath + "'.");
+						EnvironmentHandler.logger.warning(". . . WARNING (" + spec.getName() + "): Parent attribute type is not set to GROUPING for parent attribute '" + sParentPath + "'.");
 						bValid = false;
 					}
 				}

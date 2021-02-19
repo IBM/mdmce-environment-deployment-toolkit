@@ -133,7 +133,7 @@ public class Spec extends BasicEntity {
 
         Attribute oAlreadySetBefore = spec.hmAttributes.put(attr.path, attr);
         if (oAlreadySetBefore != null) {
-            System.err.println(". . . WARNING (" + spec.name + "): Attribute \"" + attr.path + "\" has already been defined before!");
+            EnvironmentHandler.logger.warning(". . . WARNING (" + spec.name + "): Attribute \"" + attr.path + "\" has already been defined before!");
         } else {
             spec.attributes.add(attr.path);
         }
@@ -195,7 +195,7 @@ public class Spec extends BasicEntity {
             if (aTypeDetailTokens.length > 1) {
                 sFileType = aTypeDetailTokens[1];
             } else {
-                System.err.println(". . . WARNING (" + sSpecName + "): No file spec information provided - assuming CSV with no header.");
+                EnvironmentHandler.logger.warning(". . . WARNING (" + sSpecName + "): No file spec information provided - assuming CSV with no header.");
             }
             String sIgnoreHeader = "0";
             if (aTypeDetailTokens.length > 2) {

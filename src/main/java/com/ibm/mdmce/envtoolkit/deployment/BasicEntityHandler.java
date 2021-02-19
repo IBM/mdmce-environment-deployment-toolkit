@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
  */
 public abstract class BasicEntityHandler {
 
-    public static PrintWriter out = EnvironmentHandler.out;
-    public static PrintWriter err = EnvironmentHandler.err;
+    //public static PrintWriter out = EnvironmentHandler.out;
+    //public static PrintWriter err = EnvironmentHandler.err;
 
     private static final Pattern NAMING_CHAR_WHITELIST = Pattern.compile("[^a-zA-Z0-9_.]");
 
@@ -39,8 +39,8 @@ public abstract class BasicEntityHandler {
     protected BasicEntityHandler() {
         alFileListXML = new ArrayList<>();
         alOrderedEntityNames = new ArrayList<>();
-        out = EnvironmentHandler.out;
-        err = EnvironmentHandler.err;
+        //out = EnvironmentHandler.out;
+        //err = EnvironmentHandler.err;
     }
 
     /**
@@ -87,7 +87,7 @@ public abstract class BasicEntityHandler {
      */
     protected void initialize(String sInputFilePath, String sEncoding, TemplateParameters tp) {
         sInputFilePath = sInputFilePath + File.separator + csvFilePath;
-        out.println("Reading input from: " + sInputFilePath);
+        EnvironmentHandler.logger.info("Reading input from: " + sInputFilePath);
         try {
             // Read in the entities first...
             CSVParser readerCSV = new CSVParser(sInputFilePath, sEncoding, entity.getColumnCount());
@@ -101,10 +101,10 @@ public abstract class BasicEntityHandler {
                 aTokens = readerCSV.splitLine();
             }
         } catch (FileNotFoundException errNoFile) {
-            err.println("Error: File not found! " + errNoFile.getMessage());
+            EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
             federated = false;
         } catch (IOException errIO) {
-            err.println("Error: IO problem! " + errIO.getMessage());
+            EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
         }
     }
 
@@ -264,7 +264,7 @@ public abstract class BasicEntityHandler {
      * @throws IOException on any error writing
      */
     protected void outputEntityCSV(BasicEntity oEntity, Writer outFile, String sOutputPath) throws IOException {
-        out.println(". . . outputting CSV for " + oEntity.getUniqueId());
+        EnvironmentHandler.logger.finer(". . . outputting CSV for " + oEntity.getUniqueId());
         oEntity.outputEntityCSV(outFile, sOutputPath);
     }
 
@@ -323,7 +323,7 @@ public abstract class BasicEntityHandler {
         // Only go through the replacement routines if there is in fact any template parameter to be filled in...
         if (iTemplateParamIndex == -1 || CSVParser.checkBoolean(aFields.get(iTemplateParamIndex))) {
             if (sTopLevelVarName.equals("")) {
-                err.println(". . . WARNING: No template variables have been defined - skipping object.");
+                EnvironmentHandler.logger.warning(". . . WARNING: No template variables have been defined - skipping object.");
                 alReplacedTemplates.add(aFields);
             } else {
 
@@ -425,7 +425,7 @@ public abstract class BasicEntityHandler {
             }
             for (String sEntityName : aEntityNames) {
                 BasicEntity oEntity = getFromCache(sEntityName, sClassName);
-                out.println(". . . outputting XML for " + oEntity.getUniqueId());
+                EnvironmentHandler.logger.finer(". . . outputting XML for " + oEntity.getUniqueId());
                 oEntity.outputEntityXML(this, outFile, sOutputDir, sCompanyCode);
             }
             outFile.write("</" + entity.getRootElement() + ">\n");
@@ -452,7 +452,7 @@ public abstract class BasicEntityHandler {
             fPath.mkdirs();
             osw = new OutputStreamWriter(new FileOutputStream(sFilePath, false), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            out.println("ERROR: Unable to get new writer: " + e.getMessage());
+            EnvironmentHandler.logger.severe("ERROR: Unable to get new writer: " + e.getMessage());
         }
         return osw;
     }
@@ -468,14 +468,14 @@ public abstract class BasicEntityHandler {
 
         try {
             Writer writer = getNewWriter(sOutputFilePath);
-            out.println("Outputting " + sOutputType + " to : " + sOutputFilePath);
+            EnvironmentHandler.logger.fine("Outputting " + sOutputType + " to : " + sOutputFilePath);
             outputEntities(sCompanyCode, sClassName, writer, sOutputFilePath, sOutputType);
             writer.flush();
             addGeneratedFileXML(sOutputFilePath);
         } catch (FileNotFoundException errNoFile) {
-            err.println("Error: File not found! " + errNoFile.getMessage());
+            EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
         } catch (IOException errIO) {
-            err.println("Error: IO problem! " + errIO.getMessage());
+            EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
         }
 
     }

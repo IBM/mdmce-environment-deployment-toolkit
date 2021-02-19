@@ -52,7 +52,7 @@ public class AttributeCollectionHandler extends BasicEntityHandler {
 						Spec.Attribute attr = spec.getAttributes().get(sAttr);
 						if (attr == null) {
 							bValid = false;
-							err.println(". . . WARNING (" + attrCol.getName() + "): Unable to find attribute - " + sSpecName + "/" + sAttr);
+							EnvironmentHandler.logger.warning(". . . WARNING (" + attrCol.getName() + "): Unable to find attribute - " + sSpecName + "/" + sAttr);
 						}
 					}
 				}

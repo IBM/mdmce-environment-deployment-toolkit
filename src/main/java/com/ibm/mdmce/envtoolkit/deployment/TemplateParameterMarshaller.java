@@ -26,7 +26,7 @@ public class TemplateParameterMarshaller {
      */
     public TemplateParameterMarshaller(String sInputFilePath, String sEncoding) {
 
-        EnvironmentHandler.out.println("Reading input from: " + sInputFilePath);
+        EnvironmentHandler.logger.info("Reading input from: " + sInputFilePath);
 
         try {
             // Read in the entities first...
@@ -51,10 +51,10 @@ public class TemplateParameterMarshaller {
             }
         }
         catch (FileNotFoundException errNoFile) {
-            EnvironmentHandler.err.println("Error: File not found! " + errNoFile.getMessage());
+            EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
         }
         catch (IOException errIO) {
-            EnvironmentHandler.err.println("Error: IO problem! " + errIO.getMessage());
+            EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
         }
 
     }

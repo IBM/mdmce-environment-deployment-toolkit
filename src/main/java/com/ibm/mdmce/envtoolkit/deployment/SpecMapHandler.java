@@ -47,7 +47,7 @@ public class SpecMapHandler extends BasicEntityHandler {
 			Set<String> attributes = spec.getAttributes().keySet();
 			if (!attributes.contains(sAttrPath)) {
 				bAttrExists = false;
-				err.println(". . . WARNING (" + specMap.getName() + "): Attribute \"" + sAttrPath + "\" does not exist in the spec indicated ['" + spec.getName() + "'].");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + specMap.getName() + "): Attribute \"" + sAttrPath + "\" does not exist in the spec indicated ['" + spec.getName() + "'].");
 			}
 		}
 		

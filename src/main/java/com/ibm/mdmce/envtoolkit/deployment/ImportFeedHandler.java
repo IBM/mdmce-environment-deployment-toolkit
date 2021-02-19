@@ -43,7 +43,7 @@ public class ImportFeedHandler extends BasicEntityHandler {
 				instance.setSpecMap(instance.getFileSpec() + " to " + instance.getCatalog());
 				SpecMap specMap = (SpecMap) getFromCache(instance.getSpecMap(), SpecMap.class.getName(), false, false);
 				if (specMap == null) {
-					out.println(" . . . generating default spec map: " + instance.getSpecMap());
+					EnvironmentHandler.logger.finer(" . . . generating default spec map: " + instance.getSpecMap());
 					specMap = new SpecMap(instance.getSpecMap(), "FILE_CATALOG_MAP", instance.getFileSpec(), instance.getCatalog());
 					EnvironmentHandler.getHandler("SpecMap").addToCache(specMap.getName(), specMap);
 					specMapGenerated = true;
@@ -52,7 +52,7 @@ public class ImportFeedHandler extends BasicEntityHandler {
 			if (!instance.getParamsPath().equals("")) {
 				Script docParams = (Script) getFromCache(instance.getParamsPath(), Script.class.getName(), false, false);
 				if (docParams == null) {
-					out.println(" . . . generating default parameters: " + instance.getParamsPath());
+					EnvironmentHandler.logger.info(" . . . generating default parameters: " + instance.getParamsPath());
 					docParams = new Script("INPUT_PARAM", instance.getParamsName(), instance.getInputSpec(), "/params/None", instance.getParamsPath());
 					EnvironmentHandler.getHandler("Script").addToCache(docParams.getPathRemote(), docParams);
 				}
@@ -103,7 +103,7 @@ public class ImportFeedHandler extends BasicEntityHandler {
 					Workflow.WorkflowStep wflStep = wfl.getSteps().get(feed.getWorkflowStep());
 					bValid = (wflStep != null) && bValid;
 					if (wflStep == null)
-						err.println("WARNING (" + feed.getName() + "): Workflow step does not exist - " + feed.getWorkflowStep());
+					EnvironmentHandler.logger.warning("WARNING (" + feed.getName() + "): Workflow step does not exist - " + feed.getWorkflowStep());
 				}
 			}
 		}
