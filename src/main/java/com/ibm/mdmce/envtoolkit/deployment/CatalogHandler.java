@@ -66,14 +66,15 @@ public class CatalogHandler extends BasicEntityHandler {
 				//String sLinkAttrPath = entry.getKey().replace(ctg.getSpecName() + "/", "");//RS 20151201 if attribute name ends with spec name, it is removed. ex : spec/attributeofspec/ --> /attributeof/ 
 				//as we just want to remove the spec name at the beginning of the string, this is better:				
 				String sLinkAttrPath = entry.getKey();
+				String sLinkAttrPathWoSpec = sLinkAttrPath;
 				if(sLinkAttrPath.startsWith(ctg.getSpecName() + "/")){
-					sLinkAttrPath = sLinkAttrPath.substring((ctg.getSpecName() + "/").length());
+					sLinkAttrPathWoSpec = sLinkAttrPath.substring((ctg.getSpecName() + "/").length());
 				}				
 				String sDestinationCtg = entry.getValue();
-				attr = spec.getAttributes().get(sLinkAttrPath);
+				attr = spec.getAttributes().get(sLinkAttrPathWoSpec);
 				bValid = (attr != null) && bValid;
 				if (attr == null)
-					err.println("WARNING (" + ctg.getName() + "): Unable to find link attribute - " + ctg.getSpecName() + "/" + sLinkAttrPath);
+					err.println("WARNING (" + ctg.getName() + "): Unable to find link attribute - " + ctg.getSpecName() + "/" + sLinkAttrPathWoSpec);
 				bValid = validateExists(sDestinationCtg, Catalog.class.getName(), ctg.getName()) && bValid;
 				//RS20210217: if we have a target attribute, check it exists 
 				String sDestAttr = (String)ctg.getLinkSpecPathToDestinationAttribute().get(sLinkAttrPath);
@@ -81,7 +82,7 @@ public class CatalogHandler extends BasicEntityHandler {
 					if (sDestAttr.equals("")){
 						err.println("WARNING (" + ctg.getName() + "): Empty target link attribute - " + sDestAttr);
 					}else{
-						String sDestSpecName = sDestAttr.split("\\Ω/\\E")[0];
+						String sDestSpecName = sDestAttr.split("/")[0];
 						bValid = validateExists(sDestSpecName, Spec.class.getName(), ctg.getName()) && bValid;
 						Spec specDestSpec = (Spec) getFromCache(sDestSpecName, Spec.class.getName(), false, false);
 						if( specDestSpec != null ){
