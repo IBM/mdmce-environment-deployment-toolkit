@@ -11,6 +11,7 @@ import com.ibm.mdmce.envtoolkit.deployment.model.TemplateParameters;
 import java.io.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
+import java.util.logging.*;
 
 /**
  * The primary execution thread through which all of the entity handlers are invoked, the only requirements to utilise
@@ -41,6 +42,18 @@ public class EnvironmentHandler {
     private static List<String> alAllLocales = new ArrayList<>();
 
     private static Map<String, BasicEntityHandler> hmEntityHandlers = new HashMap<>();
+
+    public static Logger logger;
+    private static void initLogger(Level lvl){
+        System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s%n");
+        logger = Logger.getLogger("toolkit");
+        logger.setLevel(lvl); 
+        System.out.println("Logger level: "+logger.getLevel());
+        for (Handler handler : logger.getParent().getHandlers()){//The logger inherits parent handler, which is 'INFO' by default
+            handler.setLevel(lvl);
+            System.out.println("Parent handler level: "+handler.getLevel());
+        }
+    }
 
     private static final String[] ENTITY_ORDER = {
             "CompanyAttribute",
@@ -295,7 +308,7 @@ public class EnvironmentHandler {
      * Print the usage of the main method.
      */
     public static void printUsage() {
-        out.println("Usage: EnvironmentHandler <companycode> <inputPath> <outputPath>");
+        out.println("Usage: EnvironmentHandler <companycode> <inputPath> <outputPath> [<version> <documentationPath> <encoding> <logLevel>]");
     }
 
     /**
@@ -334,6 +347,7 @@ public class EnvironmentHandler {
         String sVersion = "";
         String sDocumentationPath = "";
         String sEncoding = "ISO-8859-1";
+        String sLogLevel = Level.ALL.toString();
         if (args.length >= 3) {
             sCmpCode = args[0];
             sInputFilePath = args[1];
@@ -344,11 +358,13 @@ public class EnvironmentHandler {
                 sDocumentationPath = args[4];
             if (args.length > 5)
                 sEncoding = args[5];
+            if (args.length > 6)
+                sLogLevel = args[6];
         } else {
             printUsage();
             System.exit(1);
         }
-
+        initLogger(Level.parse(sLogLevel));
         EnvironmentHandler eh = new EnvironmentHandler(sCmpCode, sVersion, sInputFilePath, sOutputFilePath, sDocumentationPath, sEncoding);
         eh.validateEnvironmentFiles();
         eh.outputEnvironmentFiles();
