@@ -49,18 +49,18 @@ public class HierarchyHandler extends BasicEntityHandler {
 			Spec.Attribute attr = spec.getAttributes().get(sDisplayAttr);
 			bValid = (attr != null) && bValid;
 			if (attr == null) {
-				err.println(". . . WARNING (" + hierarchy.getName() + "): Unable to find attribute - " + hierarchy.getSpecName() + "/" + sDisplayAttr);
+				EnvironmentHandler.logger.warning(". . . WARNING (" + hierarchy.getName() + "): Unable to find attribute - " + hierarchy.getSpecName() + "/" + sDisplayAttr);
 			} else if (!attr.isIndexed()) {
-				err.println(". . . WARNING (" + hierarchy.getName() + "): Display attribute (" + hierarchy.getSpecName() + "/" + sDisplayAttr + ") is not indexed.");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + hierarchy.getName() + "): Display attribute (" + hierarchy.getSpecName() + "/" + sDisplayAttr + ") is not indexed.");
 			}
 			
 			String sPathAttr = hierarchy.getPathAttribute().replace(hierarchy.getSpecName() + "/", "");
 			attr = spec.getAttributes().get(sPathAttr);
 			bValid = (attr != null) && bValid;
 			if (attr == null) {
-				err.println(". . . WARNING (" + hierarchy.getName() + "): Unable to find attribute - " + hierarchy.getSpecName() + "/" + sPathAttr);
+				EnvironmentHandler.logger.warning(". . . WARNING (" + hierarchy.getName() + "): Unable to find attribute - " + hierarchy.getSpecName() + "/" + sPathAttr);
 			} else if (!attr.isIndexed() || attr.getMin() != 1) {
-				err.println(". . . WARNING (" + hierarchy.getName() + "): Path attribute (" + hierarchy.getSpecName() + "/" + sDisplayAttr + ") is not indexed or not set as mandatory (minimum occurrence of 1).");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + hierarchy.getName() + "): Path attribute (" + hierarchy.getSpecName() + "/" + sDisplayAttr + ") is not indexed or not set as mandatory (minimum occurrence of 1).");
 			}
 			
 		}

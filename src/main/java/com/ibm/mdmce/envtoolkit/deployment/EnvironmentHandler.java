@@ -11,6 +11,7 @@ import com.ibm.mdmce.envtoolkit.deployment.model.TemplateParameters;
 import java.io.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
+import java.util.logging.*;
 
 /**
  * The primary execution thread through which all of the entity handlers are invoked, the only requirements to utilise
@@ -34,13 +35,25 @@ public class EnvironmentHandler {
     private static String _ENCODING;
     private TemplateParameters templateParameters;
 
-    public static PrintWriter out;
-    public static PrintWriter err;
+    //public static PrintWriter out;
+    //public static PrintWriter err;
 
     private static Map<String, BasicEntity> hmFullEntityCache = new HashMap<>();
     private static List<String> alAllLocales = new ArrayList<>();
 
     private static Map<String, BasicEntityHandler> hmEntityHandlers = new HashMap<>();
+
+    public static Logger logger;
+    private static void initLogger(Level lvl){
+        System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s: %5$s%n");
+        logger = Logger.getLogger("toolkit");
+        logger.setLevel(lvl); 
+        System.out.println("Logger level: "+logger.getLevel());
+        for (Handler handler : logger.getParent().getHandlers()){//The logger inherits parent handler, which is 'INFO' by default
+            handler.setLevel(lvl);
+            System.out.println("Parent handler level: "+handler.getLevel());
+        }
+    }
 
     private static final String[] ENTITY_ORDER = {
             "CompanyAttribute",
@@ -133,32 +146,32 @@ public class EnvironmentHandler {
         outputPath = sOutputPath;
         _ENCODING = sEncoding;
 
-        try {
-            out = new PrintWriter(new OutputStreamWriter(System.out, sEncoding), true);
-            err = new PrintWriter(new OutputStreamWriter(System.err, sEncoding), true);
-        } catch (UnsupportedEncodingException uee) {
-            err.println("ERROR: Unable to create console outputs using encoding: " + sEncoding);
-        }
+        //try {
+        //    out = new PrintWriter(new OutputStreamWriter(System.out, sEncoding), true);
+        //    err = new PrintWriter(new OutputStreamWriter(System.err, sEncoding), true);
+        //} catch (UnsupportedEncodingException uee) {
+        //    EnvironmentHandler.logger.severe("ERROR: Unable to create console outputs using encoding: " + sEncoding);
+        //}
 
         TemplateParameterMarshaller tpm = new TemplateParameterMarshaller(inputPath + File.separator + "TemplateParameters.csv", sEncoding);
         templateParameters = tpm.getTemplateParameters();
 
-        out.println("Reading input from        : " + inputPath);
-        out.println("Reading documentation from: " + sDocumentationFilePath);
+        EnvironmentHandler.logger.info("Reading input from        : " + inputPath);
+        EnvironmentHandler.logger.info("Reading documentation from: " + sDocumentationFilePath);
         if (templateParameters.getTopLevelVarname().equals("")) {
-            out.println("Not creating template objects - no template parameters defined.");
+            EnvironmentHandler.logger.info("Not creating template objects - no template parameters defined.");
         } else {
-            out.println("Creating template objects using the following variables:");
+            EnvironmentHandler.logger.info("Creating template objects using the following variables:");
             for (String sTopLevelVar : templateParameters.getTopLevelVars()) {
-                out.println(" . . . " + sTopLevelVar + ":");
+                EnvironmentHandler.logger.info(" . . . " + sTopLevelVar + ":");
                 List<String> alVars = templateParameters.getSecondLevelFromTopLevel(sTopLevelVar);
                 for (String sSecondVar : alVars) {
-                    out.println(" . . . . . . " + sSecondVar);
+                    EnvironmentHandler.logger.info(" . . . . . . " + sSecondVar);
                 }
             }
         }
 
-        out.println("Marshalling data...");
+        EnvironmentHandler.logger.info("Marshalling data...");
         initEntities(sDocumentationFilePath);
 
     }
@@ -181,7 +194,7 @@ public class EnvironmentHandler {
 
                 BasicEntityHandler beh = getHandler(sEntityName);
                 if (beh.hasFederatedInfo()) {
-                    out.println("Writing ImportEnv file for entity " + sEntityName);
+                    EnvironmentHandler.logger.info("Writing ImportEnv file for entity " + sEntityName);
                     beh.outputEnvFile(companyCode, MODEL_PKG_NAME + "." + sEntityName, outputPath + File.separator + beh.getXmlFilePath(), "XML");
                     outFile.write(beh.getImportEnvXML(outputPath + File.separator).replace("\\", "/"));
                 }
@@ -192,9 +205,9 @@ public class EnvironmentHandler {
             outFile.flush();
 
         } catch (FileNotFoundException errNoFile) {
-            err.println("Error: File not found! " + errNoFile.getMessage());
+            EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
         } catch (IOException errIO) {
-            err.println("Error: IO problem! " + errIO.getMessage());
+            EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
         }
 
     }
@@ -207,7 +220,7 @@ public class EnvironmentHandler {
         for (String sEntityName : ENTITY_ORDER) {
 
             BasicEntityHandler beh = getHandler(sEntityName);
-            out.println("Validating " + sEntityName + "s ...");
+            EnvironmentHandler.logger.info("Validating " + sEntityName + "s ...");
             beh.validateEntities(MODEL_PKG_NAME + "." + sEntityName);
 
         }
@@ -266,16 +279,16 @@ public class EnvironmentHandler {
         if (oEntity == null) {
             if (bFailIfNotFound) {
                 if (sQualifier != null)
-                    err.println(". . . ERROR (" + sQualifier + "): " + sName + " [" + sEntityType + "] not found!");
+                    EnvironmentHandler.logger.severe(". . . ERROR (" + sQualifier + "): " + sName + " [" + sEntityType + "] not found!");
                 else
-                    err.println(". . . ERROR: " + sName + " [" + sEntityType + "] not found!");
-                err.println(". . . Build will now exit due to failed dependencies (see above).");
+                    EnvironmentHandler.logger.severe(". . . ERROR: " + sName + " [" + sEntityType + "] not found!");
+                EnvironmentHandler.logger.severe(". . . Build will now exit due to failed dependencies (see above).");
                 System.exit(1);
             } else if (bWarnIfNotFound) {
                 if (sQualifier != null)
-                    err.println(". . . WARNING (" + sQualifier + "): " + sName + " [" + sEntityType + "] not found!");
+                    EnvironmentHandler.logger.warning(". . . WARNING (" + sQualifier + "): " + sName + " [" + sEntityType + "] not found!");
                 else
-                    err.println(". . . WARNING: " + sName + " [" + sEntityType + "] not found!");
+                    EnvironmentHandler.logger.warning(". . . WARNING: " + sName + " [" + sEntityType + "] not found!");
             }
         }
 
@@ -295,7 +308,7 @@ public class EnvironmentHandler {
      * Print the usage of the main method.
      */
     public static void printUsage() {
-        out.println("Usage: EnvironmentHandler <companycode> <inputPath> <outputPath>");
+        EnvironmentHandler.logger.info("Usage: EnvironmentHandler <companycode> <inputPath> <outputPath> [<version> <documentationPath> <encoding> <logLevel>]");
     }
 
     /**
@@ -303,9 +316,9 @@ public class EnvironmentHandler {
      */
     public static void outputEnvCache() {
 
-        out.println("===== CACHE CONTENTS =====");
+        EnvironmentHandler.logger.info("===== CACHE CONTENTS =====");
         for (String sCacheKey : hmFullEntityCache.keySet()) {
-            out.println(sCacheKey + ": " + hmFullEntityCache.get(sCacheKey));
+            EnvironmentHandler.logger.info(sCacheKey + ": " + hmFullEntityCache.get(sCacheKey));
         }
 
     }
@@ -334,6 +347,7 @@ public class EnvironmentHandler {
         String sVersion = "";
         String sDocumentationPath = "";
         String sEncoding = "ISO-8859-1";
+        String sLogLevel = Level.ALL.toString();
         if (args.length >= 3) {
             sCmpCode = args[0];
             sInputFilePath = args[1];
@@ -344,11 +358,13 @@ public class EnvironmentHandler {
                 sDocumentationPath = args[4];
             if (args.length > 5)
                 sEncoding = args[5];
+            if (args.length > 6)
+                sLogLevel = args[6];
         } else {
             printUsage();
             System.exit(1);
         }
-
+        initLogger(Level.parse(sLogLevel));
         EnvironmentHandler eh = new EnvironmentHandler(sCmpCode, sVersion, sInputFilePath, sOutputFilePath, sDocumentationPath, sEncoding);
         eh.validateEnvironmentFiles();
         eh.outputEnvironmentFiles();

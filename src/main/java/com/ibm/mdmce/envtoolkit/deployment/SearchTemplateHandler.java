@@ -50,7 +50,7 @@ public class SearchTemplateHandler extends BasicEntityHandler {
 			colArea = (ColArea) BasicEntityHandler.getFromCache(sContainerName, ColArea.class.getName(), false, true, sSearchTemplateName);
 			if (colArea == null) {
 				bValid = false;
-				System.err.println(" . . . WARNING (" + sSearchTemplateName + "): No container found with the name '" + sContainerName + "'.");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + sSearchTemplateName + "): No container found with the name '" + sContainerName + "'.");
 			}
 		}
 		
@@ -58,7 +58,7 @@ public class SearchTemplateHandler extends BasicEntityHandler {
 			Workflow wfl = (Workflow) BasicEntityHandler.getFromCache(colArea.getWorkflow(), Workflow.class.getName(), false, true, sContainerName);
 			if (!wfl.getSteps().containsKey(sStepName)) {
 				bValid = false;
-				System.err.println(" . . . WARNING (" + sSearchTemplateName + "): No workflow step with the name '" + sStepName + "' was found in workflow '" + wfl.getName() + "' for collaboration area '" + sContainerName + "'.");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + sSearchTemplateName + "): No workflow step with the name '" + sStepName + "' was found in workflow '" + wfl.getName() + "' for collaboration area '" + sContainerName + "'.");
 			}
 		}
 		

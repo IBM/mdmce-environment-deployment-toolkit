@@ -43,15 +43,15 @@ public class DocumentHandler extends BasicEntityHandler {
 				}
 			}
 			// Create a default empty parameter set if it doesn't already exist...
-			out.println(" . . . Attempting to create default parameters file: " + inputDirectory + File.separator + "params" + File.separator + "None");
+			EnvironmentHandler.logger.info(" . . . Attempting to create default parameters file: " + inputDirectory + File.separator + "params" + File.separator + "None");
 			File fileParamsPath = new File(inputDirectory + File.separator + "params");
 			fileParamsPath.mkdirs();
 			File fileDefaultParams = new File(inputDirectory + File.separator + "params" + File.separator + "None");
-			out.println(" . . .   --> Successful? " + fileDefaultParams.createNewFile());
+			EnvironmentHandler.logger.info(" . . .   --> Successful? " + fileDefaultParams.createNewFile());
 		} catch (FileNotFoundException errNoFile) {
-			err.println("Error: File not found! " + errNoFile.getMessage());
+			EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
 		} catch (IOException errIO) {
-			err.println("Error: IO problem! " + errIO.getMessage());
+			EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
 		}
 		
 	}
@@ -65,7 +65,7 @@ public class DocumentHandler extends BasicEntityHandler {
 	private void getDocumentsForAllFilesInDir(File directory, List<Script> alDocs) {
 		File[] filesAndDirs = directory.listFiles();
 		if (filesAndDirs == null) {
-			out.println("WARNING: Specified documentation directory not found: " + directory.getPath());
+			EnvironmentHandler.logger.warning("WARNING: Specified documentation directory not found: " + directory.getPath());
 		} else {
 			for (File file : filesAndDirs) {
 				if (!file.getName().equals(".git")) {
@@ -107,7 +107,7 @@ public class DocumentHandler extends BasicEntityHandler {
 		
 		File fileDoc = new File(inputDirectory + doc.getPathLocal());
 		if (!fileDoc.exists()) {
-			err.println("WARNING (" + doc.getName() + "): Could not find specified document - " + inputDirectory + doc.getPathLocal());
+			EnvironmentHandler.logger.warning("WARNING (" + doc.getName() + "): Could not find specified document - " + inputDirectory + doc.getPathLocal());
 			bValid = false;
 		}
 		

@@ -49,15 +49,15 @@ public class WorkflowHandler extends BasicEntityHandler {
 
 			if (wflStep.getType().equals("NESTED_WORKFLOW")) {
 				if (wflStep.getPerformerUsers().size() > 0) {
-					err.println(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") cannot have any user performers defined.");
+					EnvironmentHandler.logger.warning(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") cannot have any user performers defined.");
 					bValid = false;
 				}
 				if (wflStep.getPerformerRoles().size() > 0) {
-					err.println(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") cannot have any role performers defined.");
+					EnvironmentHandler.logger.warning(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") cannot have any role performers defined.");
 					bValid = false;
 				}
 				if (wflStep.getRequiredAttributeCollections().size() > 0) {
-					err.println(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") cannot have any required attribute collections defined.");
+					EnvironmentHandler.logger.warning(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") cannot have any required attribute collections defined.");
 					bValid = false;
 				}
 			} else {
@@ -77,13 +77,13 @@ public class WorkflowHandler extends BasicEntityHandler {
 				List<String> alNextSteps = entryExitValues.getValue();
 				if (wflStep.getType().equals("NESTED_WORKFLOW")) {
 					if (!sExitValue.equals("SUCCESS") && !sExitValue.equals("FAILURE") && !sExitValue.equals("TIMEOUT")) {
-						err.println(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") is using an exit value other than SUCCESS, FAILURE, or TIMEOUT: " + sExitValue + ".");
+						EnvironmentHandler.logger.warning(". . . WARNING (" + wfl.getName() + "): Nested workflow (" + sStepName + ") is using an exit value other than SUCCESS, FAILURE, or TIMEOUT: " + sExitValue + ".");
 						bValid = false;
 					}
 				}
 				for (String sNextStep : alNextSteps) {
 					if (!wfl.getSteps().containsKey(sNextStep)) {
-						err.println(". . . WARNING (" + wfl.getName() + "): Mapped next step (" + sNextStep + ") from " + sStepName + "::" + sExitValue + " not found.");
+						EnvironmentHandler.logger.warning(". . . WARNING (" + wfl.getName() + "): Mapped next step (" + sNextStep + ") from " + sStepName + "::" + sExitValue + " not found.");
 						bValid = false;
 					}
 				}

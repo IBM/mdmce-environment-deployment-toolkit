@@ -81,14 +81,14 @@ public abstract class ContainerContentHandler extends BasicEntityHandler {
 					srcFileStream.close();
 					dstFileStream.close();
 				} else {
-					err.println(". . . WARNING: Data file - " + relativePath + File.separator + instance.getDataFilePath() + " - not found.");
+					EnvironmentHandler.logger.warning(". . . WARNING: Data file - " + relativePath + File.separator + instance.getDataFilePath() + " - not found.");
 				}
 				addToCacheWithType(instance.getUniqueId(), ContainerContent.class.getName(), instance);
 			}
 		} catch (FileNotFoundException errNoFile) {
-			err.println("Error: File not found! " + errNoFile.getMessage());
+			EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
 		} catch (IOException errIO) {
-			err.println("Error: IO problem! " + errIO.getMessage());
+			EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
 		}
 	}
 
