@@ -201,15 +201,27 @@ public class CSVParser {
      * considered to be "true" and anything else is considered to be "false": {@literal yes}, {@literal true},
      * {@literal x}, and {@literal y}.
      * @param s the string to translate into a boolean value
+     * @param bDefault the boolean value to use when the string is null or empty
      * @return boolean
      */
-    public static boolean checkBoolean(String s) {
+    public static boolean checkBoolean(String s, boolean bDefault) {
         if (s == null || s.equals("")) {
-            return false;
+            return bDefault;
         } else {
             String sInsensitive = s.toUpperCase();
             return (sInsensitive.equals("YES") || sInsensitive.equals("TRUE") || sInsensitive.equals("X") || sInsensitive.equals("Y"));
         }
+    }
+
+    /**
+     * Attempts to translate the provided string into a boolean, where any of the following (case-insensitive) are
+     * considered to be "true" and anything else, including null or empty, is considered to be "false": {@literal yes}, {@literal true},
+     * {@literal x}, and {@literal y}.
+     * @param s the string to translate into a boolean value
+     * @return boolean
+     */
+    public static boolean checkBoolean(String s) {
+        return checkBoolean(s, false);
     }
 
     /**
