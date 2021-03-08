@@ -55,10 +55,10 @@ public class CatalogHandler extends BasicEntityHandler {
 			Spec.Attribute attr = spec.getAttributes().get(sDisplayAttr);
 			bValid = (attr != null) && bValid;
 			if (attr == null) {
-				err.println("WARNING (" + ctg.getName() + "): Unable to find attribute - " + ctg.getSpecName() + "/" + sDisplayAttr);
+				EnvironmentHandler.logger.warning("WARNING (" + ctg.getName() + "): Unable to find attribute - " + ctg.getSpecName() + "/" + sDisplayAttr);
 				bValid = false;
 			} else if (!attr.isIndexed()) {
-				err.println(". . . WARNING (" + ctg.getName() + "): Display attribute (" + ctg.getSpecName() + "/" + sDisplayAttr + ") is not indexed.");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + ctg.getName() + "): Display attribute (" + ctg.getSpecName() + "/" + sDisplayAttr + ") is not indexed.");
 				bValid = false;
 			}
 
@@ -66,15 +66,39 @@ public class CatalogHandler extends BasicEntityHandler {
 				//String sLinkAttrPath = entry.getKey().replace(ctg.getSpecName() + "/", "");//RS 20151201 if attribute name ends with spec name, it is removed. ex : spec/attributeofspec/ --> /attributeof/ 
 				//as we just want to remove the spec name at the beginning of the string, this is better:				
 				String sLinkAttrPath = entry.getKey();
+				String sLinkAttrPathWoSpec = sLinkAttrPath;
 				if(sLinkAttrPath.startsWith(ctg.getSpecName() + "/")){
-					sLinkAttrPath = sLinkAttrPath.substring((ctg.getSpecName() + "/").length());
+					sLinkAttrPathWoSpec = sLinkAttrPath.substring((ctg.getSpecName() + "/").length());
 				}				
 				String sDestinationCtg = entry.getValue();
-				attr = spec.getAttributes().get(sLinkAttrPath);
+				attr = spec.getAttributes().get(sLinkAttrPathWoSpec);
 				bValid = (attr != null) && bValid;
 				if (attr == null)
-					err.println("WARNING (" + ctg.getName() + "): Unable to find attribute - " + ctg.getSpecName() + "/" + sLinkAttrPath);
+					EnvironmentHandler.logger.warning("WARNING (" + ctg.getName() + "): Unable to find link attribute - " + ctg.getSpecName() + "/" + sLinkAttrPathWoSpec);
 				bValid = validateExists(sDestinationCtg, Catalog.class.getName(), ctg.getName()) && bValid;
+				//RS20210217: if we have a target attribute, check it exists 
+				String sDestAttr = (String)ctg.getLinkSpecPathToDestinationAttribute().get(sLinkAttrPath);
+				if (sDestAttr != null){
+					if (sDestAttr.equals("")){
+						EnvironmentHandler.logger.warning("WARNING (" + ctg.getName() + "): Empty target link attribute - " + sDestAttr);
+					}else{
+						String sDestSpecName = sDestAttr.split("/")[0];
+						bValid = validateExists(sDestSpecName, Spec.class.getName(), ctg.getName()) && bValid;
+						Spec specDestSpec = (Spec) getFromCache(sDestSpecName, Spec.class.getName(), false, false);
+						if( specDestSpec != null ){
+							String sDestAttrPath = sDestAttr.substring((sDestSpecName + "/").length());
+							Spec.Attribute attrDestAttr = specDestSpec.getAttributes().get(sDestAttrPath);
+							bValid = (attrDestAttr != null) && bValid;
+							if (attrDestAttr == null){
+								EnvironmentHandler.logger.warning("WARNING (" + ctg.getName() + "): Unable to find target link attribute - " + sDestSpecName + "/" + sDestAttrPath);
+							}else{//check the target attribute is valid for link: indexed
+								if (! attrDestAttr.isIndexed())
+									EnvironmentHandler.logger.warning("WARNING (" + ctg.getName() + "): Target link attribute is not indexed - " + sDestSpecName + "/" + sDestAttrPath);
+								bValid = (attrDestAttr.isIndexed()) && bValid;
+							}
+						}
+					}
+				}
 			}
 
 		}
@@ -94,7 +118,7 @@ public class CatalogHandler extends BasicEntityHandler {
 			Map<String, List<String>> attrColMap = entry.getValue();
 			bValid = validateExists(sHierarchyName, Hierarchy.class.getName(), ctg.getName()) && bValid;
 			if ( !(ctg.getPrimaryHierarchy().equals(sHierarchyName) || ctg.getSecondaryHierarchies().contains(sHierarchyName)) ) {
-				err.println("WARNING (" + ctg.getName() + "): Location hierarchy (" + sHierarchyName + ") not associated as a primary or secondary hierarchy to the catalogue (" + ctg.getName() + ")");
+				EnvironmentHandler.logger.warning("WARNING (" + ctg.getName() + "): Location hierarchy (" + sHierarchyName + ") not associated as a primary or secondary hierarchy to the catalogue (" + ctg.getName() + ")");
 				bValid = false;
 			}
 			for (Map.Entry<String, List<String>> specEntry : attrColMap.entrySet()) {

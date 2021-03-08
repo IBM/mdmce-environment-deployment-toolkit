@@ -30,7 +30,7 @@ public class RoleMappingHandler extends BasicEntityHandler {
 
 		sInputFilePath = sInputFilePath + File.separator + csvFilePath;
 
-		out.println("Reading input from: " + sInputFilePath);
+		EnvironmentHandler.logger.info("Reading input from: " + sInputFilePath);
 		
 		try {
 			// Read in the entities first...
@@ -85,10 +85,10 @@ public class RoleMappingHandler extends BasicEntityHandler {
 			}
 
 		} catch (FileNotFoundException errNoFile) {
-			err.println("Error: File not found! " + errNoFile.getMessage());
+			EnvironmentHandler.logger.severe("Error: File not found! " + errNoFile.getMessage());
 			federated = false;
 		} catch (IOException errIO) {
-			err.println("Error: IO problem! " + errIO.getMessage());
+			EnvironmentHandler.logger.severe("Error: IO problem! " + errIO.getMessage());
 		}
 		
 	}

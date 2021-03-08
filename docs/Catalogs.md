@@ -14,13 +14,16 @@
 1. **Display Attribute** - full spec path of the display attribute to be used for the catalog
 1. **ACG** - name of the access control group to be associated to the catalog
 1. **Links** - comma-separated list of the links that should be defined for the catalog.  Each link takes the form
-    `FullSpecPathToLinkingAttribute|DestinationCatalogName`
+    `FullSpecPathToLinkingAttribute|DestinationCatalogName`.
+    Optionaly you can specify a display attribute instead of the primary key with `FullSpecPathToLinkingAttribute|DestinationCatalogName|FullSpecPathToDestinationCatalogAttribute`
 1. **Locations** - location hierarchy and details specified in the format:
     `HierarchyName=SecondarySpecName|InheritanceAttributeCollectionList`, where the `InheritanceAttributeCollectionList`
     is itself a comma-separated list of attribute collection names. Separate location hierarchies will need to be defined
     on a new line within the cell (CTRL-Enter within Excel).
 1. **Scripts** - comma-separated list of the scripts that should be associated with the catalog.  Each script takes the
     form `ScriptType|ScriptName`
+1. **User Defined Attributes** - comma-separated list of user defined attributes to be added to the catalog.  Each attribute takes the
+    form `AttributeName|AttributeValue`. This can be used to set the domain parameters: [DOMAIN_ENTITY_FOR_ITEM, DOMAIN_ENTITY_ATTRIBUTE](https://www.ibm.com/support/knowledgecenter/SSADN3_12.0.0/dev_soln/labels/con_customizinglabels.html)
 
 ### Valid script types
 

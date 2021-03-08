@@ -41,7 +41,7 @@ public class ExportHandler extends BasicEntityHandler {
 				instance.setSpecMap(instance.getContainerName() + " to " + instance.getDestinationSpec());
 				SpecMap specMap = (SpecMap) getFromCache(instance.getSpecMap(), SpecMap.class.getName(), false, false);
 				if (specMap == null) {
-					out.println(" . . . generating default spec map: " + instance.getSpecMap());
+					EnvironmentHandler.logger.finer(" . . . generating default spec map: " + instance.getSpecMap());
 					specMap = new SpecMap(instance.getSpecMap(), "CATALOG_MKT_MAP", instance.getContainerName(), instance.getDestinationSpec());
 					EnvironmentHandler.getHandler("SpecMap").addToCache(specMap.getName(), specMap);
 				}
@@ -49,7 +49,7 @@ public class ExportHandler extends BasicEntityHandler {
 			if (!instance.getParamsPath().equals("")) {
 				Script docParams = (Script) getFromCache(instance.getParamsName(), Script.class.getName(), false, false);
 				if (docParams == null) {
-					out.println(" . . . generating default parameters: " + instance.getParamsPath());
+					EnvironmentHandler.logger.info(" . . . generating default parameters: " + instance.getParamsPath());
 					docParams = new Script("INPUT_PARAM",
 							instance.getParamsName(),
 							instance.getInputSpec(),

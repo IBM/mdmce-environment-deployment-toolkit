@@ -7,6 +7,7 @@ package com.ibm.mdmce.envtoolkit.deployment.model;
 import com.ibm.mdmce.envtoolkit.deployment.BasicEntityHandler;
 import com.ibm.mdmce.envtoolkit.deployment.CSVParser;
 import com.ibm.mdmce.envtoolkit.deployment.DocumentHandler;
+import com.ibm.mdmce.envtoolkit.deployment.EnvironmentHandler;
 
 import java.io.*;
 import java.util.*;
@@ -212,11 +213,11 @@ public class Script extends BasicEntity {
 
         if (getType().equals("INPUT_PARAM")) {
             sAttribs.append("         <Attrib name=\"").append(SCRIPT_TYPE_TO_PATH.get("INPUT_PARAM")).append(getInputSpec()).append("/").append(getName()).append("\" value=\"\"/>\n");
-            System.out.println(" . . . Attempting to read parameters from: " + inputDirectory + File.separator + getPathLocal());
+            EnvironmentHandler.logger.info(" . . . Attempting to read parameters from: " + inputDirectory + File.separator + getPathLocal());
             File fileParams = new File(inputDirectory + File.separator + getPathLocal());
             if (!fileParams.exists()) {
                 String sParamsPath = fileParams.getPath();
-                System.err.println(" . . . WARNING: Unable to find parameters specified, will create empty default: " + sParamsPath);
+                EnvironmentHandler.logger.warning(". . . WARNING: Unable to find parameters specified, will create empty default: " + sParamsPath);
                 File fileParamsPath = new File(sParamsPath.substring(0, sParamsPath.lastIndexOf(File.separator)));
                 fileParamsPath.mkdirs();
                 fileParams.createNewFile();

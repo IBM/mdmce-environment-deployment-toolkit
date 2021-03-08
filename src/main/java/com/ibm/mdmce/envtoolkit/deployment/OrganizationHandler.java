@@ -61,18 +61,18 @@ public class OrganizationHandler extends BasicEntityHandler {
 			Spec.Attribute attr = spec.getAttributes().get(sDisplayAttr);
 			bValid = (attr != null) && bValid;
 			if (attr == null) {
-				err.println(". . . WARNING (" + org.getName() + "): Unable to find attribute - " + org.getSpecName() + "/" + sDisplayAttr);
+				EnvironmentHandler.logger.warning(". . . WARNING (" + org.getName() + "): Unable to find attribute - " + org.getSpecName() + "/" + sDisplayAttr);
 			} else if (!attr.isIndexed()) {
-				err.println(". . . WARNING (" + org.getName() + "): Display attribute (" + org.getSpecName() + "/" + sDisplayAttr + ") is not indexed.");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + org.getName() + "): Display attribute (" + org.getSpecName() + "/" + sDisplayAttr + ") is not indexed.");
 			}
 			
 			String sPathAttr = org.getPathAttribute().replace(org.getSpecName() + "/", "");
 			attr = spec.getAttributes().get(sPathAttr);
 			bValid = (attr != null) && bValid;
 			if (attr == null) {
-				err.println(". . . WARNING (" + org.getName() + "): Unable to find attribute - " + org.getSpecName() + "/" + sPathAttr);
+				EnvironmentHandler.logger.warning(". . . WARNING (" + org.getName() + "): Unable to find attribute - " + org.getSpecName() + "/" + sPathAttr);
 			} else if (!attr.isIndexed() || attr.getMin() != 1) {
-				err.println(". . . WARNING (" + org.getName() + "): Path attribute (" + org.getSpecName() + "/" + sDisplayAttr + ") is not indexed or not set as mandatory (minimum occurrence of 1).");
+				EnvironmentHandler.logger.warning(". . . WARNING (" + org.getName() + "): Path attribute (" + org.getSpecName() + "/" + sDisplayAttr + ") is not indexed or not set as mandatory (minimum occurrence of 1).");
 			}
 			
 		}

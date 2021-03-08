@@ -6,6 +6,7 @@ package com.ibm.mdmce.envtoolkit.deployment.model;
 
 import com.ibm.mdmce.envtoolkit.deployment.BasicEntityHandler;
 import com.ibm.mdmce.envtoolkit.deployment.CSVParser;
+import com.ibm.mdmce.envtoolkit.deployment.EnvironmentHandler;
 import com.ibm.mdmce.envtoolkit.deployment.WebServiceHandler;
 
 import java.io.*;
@@ -112,7 +113,7 @@ public class WebService extends BasicEntity {
         Script docWSDL = (Script) BasicEntityHandler.getFromCache(sPathWSDLRemote, Script.class.getName(), false, false);
 
         if (docScript == null || docWSDL == null) {
-            System.err.println(". . . WARNING: Could not find specified WebService script or WSDL file.");
+            EnvironmentHandler.logger.warning(". . . WARNING: Could not find specified WebService script or WSDL file.");
         } else {
 
             String sPathScriptLocal = sFilePath + docScript.getPathLocal().replace("/", File.separator);
