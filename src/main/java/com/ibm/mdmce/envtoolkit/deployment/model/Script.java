@@ -75,9 +75,9 @@ public class Script extends BasicEntity {
     private String pathLocal;
     private String pathRemote;
     private String name;
-    private String type;
+    private String type = "";
     private String fileDestSpec = "";
-    private String inputSpec;
+    private String inputSpec = "";
     private String charset = "Cp1252";
     private boolean aspJspLike = false;
     private String containerName = "";
