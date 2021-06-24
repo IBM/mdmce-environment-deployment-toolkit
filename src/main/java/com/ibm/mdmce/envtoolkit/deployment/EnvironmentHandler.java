@@ -87,6 +87,7 @@ public class EnvironmentHandler {
             "Export",
             "Import",
             "Report",
+            "Job",
             "UDL",
             "CatalogContent",
             "HierarchyContent",
@@ -125,6 +126,7 @@ public class EnvironmentHandler {
         hmEntityHandlers.put("Export", new ExportHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("Import", new ImportFeedHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("Report", new ReportHandler(inputPath, version, templateParameters, _ENCODING));
+        hmEntityHandlers.put("Job", new JobHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("UDL", new UserDefinedLogHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("CatalogContent", new CatalogContentHandler(inputPath, version, templateParameters, outputPath, _ENCODING));
         hmEntityHandlers.put("HierarchyContent", new HierarchyContentHandler(inputPath, version, templateParameters, outputPath, _ENCODING));

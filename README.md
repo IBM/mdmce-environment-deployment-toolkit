@@ -27,6 +27,7 @@ in with the details of your environment according to the specific instructions l
 - [DataSources.csv](docs/DataSources.md) to define data sources
 - [Distributions.csv](docs/Distributions.md) to define distributions
 - [Exports.csv](docs/Exports.md) to define exports
+- [Jobs.csv](docs/Jobs.md) to define jobs
 - [Hierarchies.csv](docs/Hierarchies.md) to define hierarchies
 - [HierarchyContents.csv](docs/HierarchyContents.md) to define data to load to hierarchies
 - [HierarchyMappings.csv](docs/HierarchyMappings.md) to define hierarchy mappings
