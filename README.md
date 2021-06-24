@@ -27,6 +27,7 @@ in with the details of your environment according to the specific instructions l
 - [DataSources.csv](docs/DataSources.md) to define data sources
 - [Distributions.csv](docs/Distributions.md) to define distributions
 - [Exports.csv](docs/Exports.md) to define exports
+- [Jobs.csv](docs/Jobs.md) to define jobs
 - [Hierarchies.csv](docs/Hierarchies.md) to define hierarchies
 - [HierarchyContents.csv](docs/HierarchyContents.md) to define data to load to hierarchies
 - [HierarchyMappings.csv](docs/HierarchyMappings.md) to define hierarchy mappings
@@ -39,7 +40,7 @@ in with the details of your environment according to the specific instructions l
 - [Roles.csv](docs/Roles.md) to define roles
 - [RoleToACGs.csv](docs/RoleToACGs.md) to define the privileges enabled between roles and access control groups
 - [Scripts.csv](docs/Scripts.md) to define scripts or other documents to load to the document store
-- [SearchTemplates.csv](docs/SearchTemplates.md) to define search templates
+- [Searches.csv](docs/Search.md) to define searches: templates/saved searches
 - [Selections.csv](docs/Selections.md) to define selections
 - [Settingss.csv](docs/Settings.md) to define user settings
 - [Specs.csv](docs/Specs.md) to define specs

@@ -46,7 +46,7 @@ public class Export extends BasicEntity {
     private String paramsName;
     private String paramsPath="";
     private String hierarchyName;
-    private String inputSpec;
+    private String inputSpec = "";
 
     private static class Singleton {
         private static final Export INSTANCE = new Export();

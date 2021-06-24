@@ -49,7 +49,7 @@ public class Import extends BasicEntity {
     private String workflowStep;
     private String approvalUser;
     private String paramsName;
-    private String inputSpec;
+    private String inputSpec = "";
     private String paramsPath = "params/None";
 
     private static class Singleton {
