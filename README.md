@@ -39,7 +39,7 @@ in with the details of your environment according to the specific instructions l
 - [Roles.csv](docs/Roles.md) to define roles
 - [RoleToACGs.csv](docs/RoleToACGs.md) to define the privileges enabled between roles and access control groups
 - [Scripts.csv](docs/Scripts.md) to define scripts or other documents to load to the document store
-- [SearchTemplates.csv](docs/SearchTemplates.md) to define search templates
+- [Searches.csv](docs/Search.md) to define searches: templates/saved searches
 - [Selections.csv](docs/Selections.md) to define selections
 - [Settingss.csv](docs/Settings.md) to define user settings
 - [Specs.csv](docs/Specs.md) to define specs

@@ -81,6 +81,7 @@ public class EnvironmentHandler {
             "ColArea",
             "WebService",
             "Selection",
+            "SavedSearch",
             "SearchTemplate",
             "SpecMap",
             "Export",
@@ -118,6 +119,7 @@ public class EnvironmentHandler {
         hmEntityHandlers.put("ColArea", new CollaborationAreaHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("WebService", new WebServiceHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("Selection", new SelectionHandler(inputPath, version, templateParameters, _ENCODING));
+        hmEntityHandlers.put("SavedSearch", new SavedSearchHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("SearchTemplate", new SearchTemplateHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("SpecMap", new SpecMapHandler(inputPath, version, templateParameters, companyCode, _ENCODING));
         hmEntityHandlers.put("Export", new ExportHandler(inputPath, version, templateParameters, _ENCODING));
