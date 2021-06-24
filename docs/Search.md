@@ -32,23 +32,26 @@ A search used for templates with type `SEARCH_TEMPLATE` and for the saved search
 1. **Attribute Path** - (optional) Full Attribute Path
 1. **Negate** - (optional) x - true, empty - false. Operator NOT 
 1. **Search operator** - (optional) Search option. 
-   CONTAINS
-   BEGINS_WITH
-   ENDS_WITH
-   IS_EMPTY
-   BEGINS_WITH_MATCH_CASE
-   ENDS_WITH_MATCH_CASE
-   EQUAL
-   EQUAL_MATCH_CASE
-   CONTAINS_MATCH_CASE
-   GREATER_THAN_OR_EQUAL
-   LESS_THAN_OR_EQUAL
-   GREATER_THAN
-   LESS_THAN
-   BETWEEN
+
 1. **Value** - (optional) The value for the search (if Save parameters is true)
 1. **Second value** - (optional) For the search operator BETWEEN
 1. **Logical operator** - (optional) Logical operator (AND / OR)
+
+### Valid search operators
+- `CONTAINS` 
+- `BEGINS_WITH` 
+- `ENDS_WITH` 
+- `IS_EMPTY` 
+- `BEGINS_WITH_MATCH_CASE` 
+- `ENDS_WITH_MATCH_CASE` 
+- `EQUAL` 
+- `EQUAL_MATCH_CASE` 
+- `CONTAINS_MATCH_CASE` 
+- `GREATER_THAN_OR_EQUAL` 
+- `LESS_THAN_OR_EQUAL` 
+- `GREATER_THAN` 
+- `LESS_THAN` 
+- `BETWEEN` 
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
