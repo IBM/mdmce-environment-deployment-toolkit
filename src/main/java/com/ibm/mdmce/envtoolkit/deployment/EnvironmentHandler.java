@@ -91,7 +91,8 @@ public class EnvironmentHandler {
             "UDL",
             "CatalogContent",
             "HierarchyContent",
-            "HierarchyMapping"
+            "HierarchyMapping",
+            "Rule"
     };
 
     protected void initEntities(String sDocumentationFilePath) {
@@ -131,6 +132,7 @@ public class EnvironmentHandler {
         hmEntityHandlers.put("CatalogContent", new CatalogContentHandler(inputPath, version, templateParameters, outputPath, _ENCODING));
         hmEntityHandlers.put("HierarchyContent", new HierarchyContentHandler(inputPath, version, templateParameters, outputPath, _ENCODING));
         hmEntityHandlers.put("HierarchyMapping", new HierarchyMappingHandler(inputPath, version, templateParameters, _ENCODING));
+        hmEntityHandlers.put("Rule", new RuleHandler(inputPath, version, templateParameters, _ENCODING));
     }
 
     /**

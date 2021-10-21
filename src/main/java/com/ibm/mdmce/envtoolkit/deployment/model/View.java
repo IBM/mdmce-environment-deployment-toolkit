@@ -82,9 +82,11 @@ public abstract class View extends BasicEntity {
             List<String> existingAttrsInTab = tabMap.getOrDefault(sTabName, null);
             if (existingAttrsInTab == null) {
                 existingAttrsInTab = new ArrayList<>();
-                tabOrder.add(sTabName);
+                if (!tabOrder.contains(sTabName))
+                    tabOrder.add(sTabName);
             }
-            existingAttrsInTab.add(sAttrCollection);
+            if (!existingAttrsInTab.contains(sAttrCollection))
+                existingAttrsInTab.add(sAttrCollection);
             tabMap.put(sTabName, existingAttrsInTab);
         }
     }
