@@ -32,6 +32,7 @@ public class User extends BasicEntity {
     public static final String LDAP_ENABLED = "LDAP Enabled?";
     public static final String LDAP_ENTRY_DN = "LDAP Entry DN";
     public static final String LDAP_SERVER_URL = "LDAP Server URL";
+    public static final String PASSWORD = "Password";
 
     private String username;
     private String firstName;
@@ -44,6 +45,7 @@ public class User extends BasicEntity {
     private boolean ldapEnabled = false;
     private String ldapEntryDN;
     private String ldapServerURL;
+    private String password;
 
     private List<String> roles = new ArrayList<>();
     private List<String> organizations = new ArrayList<>();
@@ -76,6 +78,7 @@ public class User extends BasicEntity {
         addColumn(LDAP_ENABLED);
         addColumn(LDAP_ENTRY_DN);
         addColumn(LDAP_SERVER_URL);
+        addColumn(PASSWORD);
     }
 
     /**
@@ -100,6 +103,7 @@ public class User extends BasicEntity {
         user.ldapEnabled = CSVParser.checkBoolean(getFieldValue(LDAP_ENABLED, aFields));
         user.ldapEntryDN = getFieldValue(LDAP_ENTRY_DN, aFields);
         user.ldapServerURL = getFieldValue(LDAP_SERVER_URL, aFields);
+        user.password = getFieldValue(PASSWORD, aFields);
 
         String sRoles = getFieldValue(ROLES, aFields);
         String[] aRoles = sRoles.split(",");
@@ -138,8 +142,8 @@ public class User extends BasicEntity {
         outFile.write(getNodeXML("Address", getAddress()));
         outFile.write(getNodeXML("Active", "" + isEnabled()));
         outFile.write(getNodeXML("LdapEnabled", "" + isLdapEnabled()));
-        // NOTE: This password is hard-coded to "trinitron" in encrypted form
-        outFile.write(getNodeXML("Password", "447e4ec3f5804e78d7f952eb359a71e5"));
+        // NOTE: Empty password hard-coded to "trinitron" in encrypted form
+        outFile.write(getNodeXML("Password",getPassword()));
         outFile.write(getNodeXML("LdapEntryDn", getLdapEntryDN()));
         outFile.write(getNodeXML("LdapServerUrl", getLdapServerURL()));
 
@@ -184,6 +188,7 @@ public class User extends BasicEntity {
         line.add("" + isLdapEnabled());
         line.add(getLdapEntryDN());
         line.add(getLdapServerURL());
+        line.add(getPassword());
         outputCSV(line, outFile);
     }
 
@@ -289,6 +294,14 @@ public class User extends BasicEntity {
      */
     public List<String> getOrganizations() {
         return organizations == null ? Collections.emptyList() : organizations;
+    }
+
+    /**
+     * Retrieve the password for this user.
+     * @return String
+     */
+    public String getPassword() {
+        return password == null ||  (password != null && password.isEmpty()) ? "447e4ec3f5804e78d7f952eb359a71e5" : password;
     }
 
 }

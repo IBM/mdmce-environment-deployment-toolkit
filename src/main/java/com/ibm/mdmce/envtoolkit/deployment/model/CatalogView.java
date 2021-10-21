@@ -68,24 +68,30 @@ public class CatalogView extends View {
             boolean bItemPopup = CSVParser.checkBoolean(getFieldValue(ITEM_POPUP, aFields));
             boolean bLocation = CSVParser.checkBoolean(getFieldValue(LOCATION, aFields));
 
-            view.attributeCollections.add(sAttrCollection);
+            if (!view.attributeCollections.contains(sAttrCollection))
+                view.attributeCollections.add(sAttrCollection);
             if (bSingleEdit) {
-                view.singleEdit.add(sAttrCollection);
+                if (!view.singleEdit.contains(sAttrCollection))
+                    view.singleEdit.add(sAttrCollection);
                 captureTabs(sTabName, sAttrCollection, view.singleEditTabOrder, view.singleEditTabs);
             }
             if (bMultiEdit) {
-                view.multiEdit.add(sAttrCollection);
+                if (!view.multiEdit.contains(sAttrCollection))
+                    view.multiEdit.add(sAttrCollection);
                 captureTabs(sTabName, sAttrCollection, view.multiEditTabOrder, view.multiEditTabs);
             }
             if (bItemList)
-                view.itemList.add(sAttrCollection);
+                if (!view.itemList.contains(sAttrCollection))
+                    view.itemList.add(sAttrCollection);
             if (bItemPopup)
-                view.itemPopup.add(sAttrCollection);
+                if (!view.itemPopup.contains(sAttrCollection))
+                    view.itemPopup.add(sAttrCollection);
             if (bLocation) {
-                view.location.add(sAttrCollection);
+                if (!view.location.contains(sAttrCollection))
+                    view.location.add(sAttrCollection);
                 captureTabs(sTabName, sAttrCollection, view.locationTabOrder, view.locationTabs);
             }
-            if (bViewOnly)
+            if (bViewOnly && !view.viewOnly.contains(sAttrCollection))
                 view.viewOnly.add(sAttrCollection);
 
             return (T) view;

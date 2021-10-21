@@ -69,14 +69,18 @@ public class WorkflowStepView extends View {
             boolean bMultiEdit = CSVParser.checkBoolean(getFieldValue(MULTI_EDIT, aFields));
             boolean bItemPopup = CSVParser.checkBoolean(getFieldValue(ITEM_POPUP, aFields));
 
-            view.attributeCollections.add(sAttrCollection);
+            if (!view.attributeCollections.contains(sAttrCollection))
+                view.attributeCollections.add(sAttrCollection);
             if (bSingleEdit)
-                view.singleEdit.add(sAttrCollection);
+                if (!view.singleEdit.contains(sAttrCollection))
+                    view.singleEdit.add(sAttrCollection);
             if (bMultiEdit)
-                view.multiEdit.add(sAttrCollection);
+                if (!view.multiEdit.contains(sAttrCollection))
+                    view.multiEdit.add(sAttrCollection);
             if (bItemPopup)
-                view.itemPopup.add(sAttrCollection);
-            if (bViewOnly)
+                if (!view.itemPopup.contains(sAttrCollection))
+                    view.itemPopup.add(sAttrCollection);
+            if (bViewOnly && !view.viewOnly.contains(sAttrCollection))
                 view.viewOnly.add(sAttrCollection);
 
             if (!sTabName.equals("")) {
@@ -86,7 +90,8 @@ public class WorkflowStepView extends View {
                     alAttrsInTab = new ArrayList<>();
                     view.tabOrder.add(sTabName);
                 }
-                alAttrsInTab.add(sAttrCollection);
+                if (!alAttrsInTab.contains(sAttrCollection))
+                    alAttrsInTab.add(sAttrCollection);
                 view.tabToAttributeCollections.put(sTabName, alAttrsInTab);
             }
 

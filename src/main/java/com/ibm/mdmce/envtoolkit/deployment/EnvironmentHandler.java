@@ -81,15 +81,18 @@ public class EnvironmentHandler {
             "ColArea",
             "WebService",
             "Selection",
+            "SavedSearch",
             "SearchTemplate",
             "SpecMap",
             "Export",
             "Import",
             "Report",
+            "Job",
             "UDL",
             "CatalogContent",
             "HierarchyContent",
-            "HierarchyMapping"
+            "HierarchyMapping",
+            "Rule"
     };
 
     protected void initEntities(String sDocumentationFilePath) {
@@ -118,15 +121,18 @@ public class EnvironmentHandler {
         hmEntityHandlers.put("ColArea", new CollaborationAreaHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("WebService", new WebServiceHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("Selection", new SelectionHandler(inputPath, version, templateParameters, _ENCODING));
+        hmEntityHandlers.put("SavedSearch", new SavedSearchHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("SearchTemplate", new SearchTemplateHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("SpecMap", new SpecMapHandler(inputPath, version, templateParameters, companyCode, _ENCODING));
         hmEntityHandlers.put("Export", new ExportHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("Import", new ImportFeedHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("Report", new ReportHandler(inputPath, version, templateParameters, _ENCODING));
+        hmEntityHandlers.put("Job", new JobHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("UDL", new UserDefinedLogHandler(inputPath, version, templateParameters, _ENCODING));
         hmEntityHandlers.put("CatalogContent", new CatalogContentHandler(inputPath, version, templateParameters, outputPath, _ENCODING));
         hmEntityHandlers.put("HierarchyContent", new HierarchyContentHandler(inputPath, version, templateParameters, outputPath, _ENCODING));
         hmEntityHandlers.put("HierarchyMapping", new HierarchyMappingHandler(inputPath, version, templateParameters, _ENCODING));
+        hmEntityHandlers.put("Rule", new RuleHandler(inputPath, version, templateParameters, _ENCODING));
     }
 
     /**
