@@ -108,7 +108,7 @@ public class Spec extends BasicEntity {
         attr.link = CSVParser.checkBoolean(sLink);
         attr.min = CSVParser.checkInteger(getFieldValue(MIN_OCCUR, aFields), attr.min);
         attr.max = CSVParser.checkInteger(getFieldValue(MAX_OCCUR, aFields), attr.max);
-        attr.editable = CSVParser.checkBoolean(getFieldValue(EDITABLE, aFields));
+        attr.editable = CSVParser.checkBoolean(getFieldValue(EDITABLE, aFields), attr.editable);//RS20210217 if empty, respects default
         attr.nonPersisted = CSVParser.checkBoolean(getFieldValue(NON_PERSISTED, aFields));
         attr.defaultValue = getFieldValue(DEFAULT_VALUE, aFields);
         attr.length = CSVParser.checkInteger(getFieldValue(LENGTH, aFields), attr.length);
